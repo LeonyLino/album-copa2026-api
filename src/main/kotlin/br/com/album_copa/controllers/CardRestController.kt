@@ -32,4 +32,10 @@ class CardRestController(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "size", defaultValue = "20") size: Int
     ): Page<CardResponse> = service.getAll(PageRequest.of(page, size))
+
+    @GetMapping("/owned")
+    fun getOwned(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "size", defaultValue = "20") size: Int
+    ): Page<CardResponse> = service.getAllIsOwnedFalse(PageRequest.of(page, size))
 }

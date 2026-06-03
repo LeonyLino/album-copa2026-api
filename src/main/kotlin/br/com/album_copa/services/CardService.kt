@@ -23,4 +23,6 @@ class CardService(
 
 
     fun getAll(pageable: Pageable): Page<CardResponse> = repository.findAll(pageable).map { it.toResponse() }
+
+    fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> = repository.findByOwnedIsFalse(pageable).map { it.toResponse() }
 }
