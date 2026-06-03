@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: album-copa
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 100MB
+
+logging:
+  level:
+    web: DEBUG
+
+cloudinary:
+  cloud-name: dmdqo7ill
+  api-key: 167389644618792
+  api-secret: jkcrgPhYuUJsP0vgNNzhZ7AjQyk
+  size-limit: 10485760 # 10 MB
