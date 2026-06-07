@@ -7,5 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CardRepository : JpaRepository<CardEntity, Long> {
 
-    fun findByOwnedIsFalse(pageable: Pageable): Page<CardEntity>
+    fun findByOwnedIsFalse(pageable: Pageable): Page<CardEntity>?
+    fun findByCodeContainingAndOwnedIsFalse(code: String, pageable: Pageable): Page<CardEntity>?
+    fun findByRepeatedIsTrue(pageable: Pageable): Page<CardEntity>?
+    fun findByCodeContainingAndRepeatedIsTrue(code: String, pageable: Pageable): Page<CardEntity>?
+    fun countByOwnedIsTrue(): Int
+
 }

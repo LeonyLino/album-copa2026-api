@@ -24,5 +24,18 @@ class CardService(
 
     fun getAll(pageable: Pageable): Page<CardResponse> = repository.findAll(pageable).map { it.toResponse() }
 
-    fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> = repository.findByOwnedIsFalse(pageable).map { it.toResponse() }
+    fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> =
+        repository.findByOwnedIsFalse(pageable)?.map { it.toResponse() } ?: Page.empty()
+
+    fun getAllByRepeatedIsTrue(pageable: Pageable): Page<CardResponse> =
+        repository.findByRepeatedIsTrue(pageable)?.map { it.toResponse() } ?: Page.empty()
+
+    fun getAllByCodeAndRepeatedTrue(code: String, page: Pageable): Page<CardResponse> =
+        repository.findByCodeContainingAndRepeatedIsTrue(code, page)?.map { it.toResponse() } ?: Page.empty()
+
+    fun getAllByCodeAndOwnedIsFalse(code: String, page: Pageable): Page<CardResponse> =
+        repository.findByCodeContainingAndOwnedIsFalse(code, page)?.map { it.toResponse() } ?: Page.empty()
+
+    fun getCountOwned(): Int = repository.countByOwnedIsTrue()
+
 }

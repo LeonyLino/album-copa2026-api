@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.web.bind.annotation.PathVariable
 
 @RestController
 @RequestMapping("/cards")
@@ -33,9 +34,34 @@ class CardRestController(
         @RequestParam(value = "size", defaultValue = "20") size: Int
     ): Page<CardResponse> = service.getAll(PageRequest.of(page, size))
 
-    @GetMapping("/owned")
-    fun getOwned(
+    @GetMapping("/not-owned")
+    fun getNotOwned(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "size", defaultValue = "20") size: Int
     ): Page<CardResponse> = service.getAllIsOwnedFalse(PageRequest.of(page, size))
+
+    @GetMapping("{code}/not-owned")
+    fun getByCodeNotOwned(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "size", defaultValue = "20") size: Int,
+        @PathVariable code: String,
+    ): Page<CardResponse> = service.getAllByCodeAndOwnedIsFalse(code, PageRequest.of(page, size))
+
+    @GetMapping("/repeated")
+    fun getAllRepeated(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "size", defaultValue = "20") size: Int
+    ): Page<CardResponse> = service.getAllByRepeatedIsTrue(PageRequest.of(page, size))
+
+    @GetMapping("{code}/repeated")
+    fun getByCodeRepeated(
+        @RequestParam(value = "page", defaultValue = "0") page: Int,
+        @RequestParam(value = "size", defaultValue = "20") size: Int,
+        @PathVariable code: String,
+    ): Page<CardResponse> = service.getAllByCodeAndRepeatedTrue(code, PageRequest.of(page, size))
+
+    @GetMapping("/count")
+    fun count() = service.getCountOwned()
+
+
 }

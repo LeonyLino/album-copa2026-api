@@ -37,7 +37,8 @@ class SecurityConfig(
                 // 🔓 públicos
                 it.requestMatchers("/auth/**", "/h2-console/**").permitAll()
                 // 🔓 apenas GET liberado
-                it.requestMatchers(HttpMethod.GET, "/cards/owned").permitAll()
+                it.requestMatchers(HttpMethod.GET, "/cards/**").permitAll()
+                it.requestMatchers(HttpMethod.POST, "/exchange-proposal").permitAll()
                 // 🔒 resto protegido
                 it.anyRequest().authenticated()
             }
