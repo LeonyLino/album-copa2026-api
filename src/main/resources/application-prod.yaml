@@ -1,0 +1,23 @@
+spring:
+
+
+  datasource:
+    url: jdbc:postgresql://ep-square-firefly-ac3qk2wk-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_mMIwjZNr6VD5
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    sql:
+      init:
+        mode: always
+
+jwt:
+  secret: ${JWT_SECRET:pA9FvQhHnC5e0M0vT7Rz8XKqYJ5fQ1P8ZsLk9E3R2W4}
+  expiration: 1800000
