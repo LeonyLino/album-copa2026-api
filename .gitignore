@@ -38,3 +38,14 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Environment & Secrets ###
+.env
+.env.local
+.env.*.local
+.env.prod
+application-prod.yaml
+secrets/
+
+### Docker ###
+.dockerignore

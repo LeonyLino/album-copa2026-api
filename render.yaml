@@ -8,6 +8,8 @@ services:
 
     # Docker settings
     dockerfilePath: ./Dockerfile
+    dockerfile:
+      buildArgs: []
 
     # Port configuration
     containerPort: 8080

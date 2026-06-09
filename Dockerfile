@@ -3,19 +3,27 @@ FROM eclipse-temurin:21-jdk-jammy AS builder
 
 WORKDIR /app
 
-# Copy gradle files and dependencies first (for better caching)
-COPY build.gradle.kts settings.gradle.kts gradlew gradlew.bat ./
-COPY gradle ./gradle
+# Set Gradle properties for faster builds
+ENV GRADLE_USER_HOME /app/.gradle
+RUN mkdir -p $GRADLE_USER_HOME
 
-# Download dependencies
-RUN chmod +x gradlew && \
-    ./gradlew dependencies --no-daemon
+# Copy gradle files
+COPY gradle ./gradle
+COPY build.gradle.kts settings.gradle.kts gradlew ./
+
+# Make gradlew executable
+RUN chmod +x ./gradlew
 
 # Copy source code
 COPY src ./src
 
 # Build the application
-RUN ./gradlew clean bootJar -DskipTests=true --no-daemon -x test
+# Using --build-cache and disabling parallel for stability on Render
+RUN ./gradlew clean bootJar -DskipTests=true \
+    --build-cache \
+    --no-daemon \
+    -x test \
+    -Dorg.gradle.workers.max=2
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-jammy
@@ -24,7 +32,7 @@ WORKDIR /app
 
 # Install curl for health checks
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy JAR from builder
