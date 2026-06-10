@@ -17,13 +17,9 @@ RUN chmod +x ./gradlew
 # Copy source code
 COPY src ./src
 
-# Build the application
-# Using --build-cache and disabling parallel for stability on Render
-RUN ./gradlew clean bootJar -DskipTests=true \
-    --build-cache \
-    --no-daemon \
-    -x test \
-    -Dorg.gradle.workers.max=2
+# Build the application with optimized settings for limited memory
+# gradle.properties already contains memory and worker settings
+RUN ./gradlew bootJar -x test
 
 # Stage 2: Runtime
 FROM eclipse-temurin:21-jre-jammy
