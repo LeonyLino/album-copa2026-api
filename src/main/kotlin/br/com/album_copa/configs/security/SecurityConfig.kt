@@ -43,6 +43,7 @@ class SecurityConfig(
                     "/",
                     "/index.html",
                     "/login",
+                    "/dashboard",
                     "/**/*.js",
                     "/**/*.css",
                     "/assets/**",
