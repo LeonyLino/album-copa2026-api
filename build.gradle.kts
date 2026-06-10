@@ -40,8 +40,6 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
     //Database
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.springframework.boot:spring-boot-starter-h2")
     runtimeOnly("org.postgresql:postgresql")
 
     // storage
