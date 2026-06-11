@@ -43,14 +43,11 @@ class SecurityConfig(
                     "/",
                     "/index.html",
                     "/login",
+                    "/album",
+                    "/trade",
                     "/dashboard",
-                    "/**/*.js",
-                    "/**/*.css",
                     "/assets/**",
-                    "/favicon.ico",
-                    "/**/*.woff",
-                    "/**/*.woff2",
-                    "/**/*.ttf",
+                    "/favicon.ico"
                 ).permitAll()
                 // 🔒 resto protegido
                 it.anyRequest().authenticated()
