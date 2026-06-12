@@ -39,7 +39,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 
     //Database
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql")// Database
+    runtimeOnly("com.h2database:h2")
 
     // storage
     implementation("com.cloudinary:cloudinary-http44:1.39.0")
