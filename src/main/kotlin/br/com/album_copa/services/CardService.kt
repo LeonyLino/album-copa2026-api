@@ -38,4 +38,19 @@ class CardService(
 
     fun getCountOwned(): Int = repository.countByOwnedIsTrue()
 
+    fun setFlagOwnedTrue(cardId: Long) {
+        val entity = repository.findById(cardId)
+        entity.ifPresent {
+            it.owned = true
+            repository.save(it)
+        }
+    }
+
+    fun setFlagRepeatedTrue(cardId: Long) {
+        val entity = repository.findById(cardId)
+        entity.ifPresent {
+            it.repeated = true
+            repository.save(it)
+        }
+    }
 }
