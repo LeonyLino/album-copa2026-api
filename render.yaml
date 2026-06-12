@@ -1,0 +1,65 @@
+services:
+  - type: web
+    name: album-copa
+    env: docker
+    region: oregon
+    plan: standard
+    numInstances: 1
+
+    # Docker settings
+    dockerfilePath: ./Dockerfile
+    dockerfile:
+      buildArgs: []
+
+    # Port configuration
+    containerPort: 8080
+
+    # Health check
+    healthCheckPath: /actuator/health
+
+    # Auto-deploy from Git
+    autoDeploy: true
+
+    # Environment variables
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SERVER_PORT
+        value: 8080
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JPA_SHOW_SQL
+        value: "false"
+      # Database - será configurado com PostgreSQL add-on do Render
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: album-copa-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: album-copa-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: album-copa-db
+          property: password
+      # Secrets (configure manualmente no Render Dashboard)
+      - key: JWT_SECRET
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+
+  # PostgreSQL Database
+  - type: pserv
+    name: album-copa-db
+    env: postgres
+    region: oregon
+    plan: free
+    ipAllowList: []
+    postgresMajorVersion: 16
+    preDeployCommand: ""
+    databases:
+      - name: album_copa
+        user: album_user
+        plan: free
+

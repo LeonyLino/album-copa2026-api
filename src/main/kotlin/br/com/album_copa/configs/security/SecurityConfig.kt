@@ -39,8 +39,23 @@ class SecurityConfig(
                 // 🔓 apenas GET liberado
                 it.requestMatchers(HttpMethod.GET, "/cards/**").permitAll()
                 it.requestMatchers(HttpMethod.POST, "/exchange-proposal").permitAll()
+                it.requestMatchers(
+                    "/",
+                    "/index.html",
+                    "/login",
+                    "/dashboard",
+                    "/album",
+                    "/**/*.js",
+                    "/**/*.css",
+                    "/assets/**",
+                    "/favicon.ico",
+                    "/**/*.woff",
+                    "/**/*.woff2",
+                    "/**/*.ttf",
+                ).permitAll()
                 // 🔒 resto protegido
                 it.anyRequest().authenticated()
+
             }
             // allow frames from same origin so H2 console can render
             .headers { it.frameOptions { fo -> fo.sameOrigin() } }

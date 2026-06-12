@@ -5,4 +5,4 @@
 
 
 INSERT INTO tb_users (identityuuid, email, password) VALUES
-    ( gen_random_uuid(), 'lino@email.com', '$2a$10$Mwp/xeDKTCPlX3SARBZgx.S0UlAioBBb/bmsuzBQ7J.5hEBPJbJ06');
+    ( RANDOM_UUID(), 'lino@email.com', '$2a$10$Mwp/xeDKTCPlX3SARBZgx.S0UlAioBBb/bmsuzBQ7J.5hEBPJbJ06');
