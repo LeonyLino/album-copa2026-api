@@ -24,14 +24,12 @@ class CardService(
         repository.saveAll(cards.map { it.toEntity() })
 
 
-    fun getAll(pageable: Pageable): Page<CardResponse> = repository.findAll(pageable).map { it.toResponse() }
-
     fun getAllSorted(pageable: Pageable): Page<CardResponse> =
         repository.findAll(
             PageRequest.of(
                 pageable.pageNumber,
                 pageable.pageSize,
-                Sort.by("selection").ascending()
+                Sort.by("id").ascending()
             )
         ).map { it.toResponse() }
 
