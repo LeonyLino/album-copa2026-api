@@ -6,7 +6,9 @@ import br.com.album_copa.models.dtos.CardRequest
 import br.com.album_copa.models.dtos.CardResponse
 import br.com.album_copa.repositories.CardRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 @Service
@@ -24,6 +26,15 @@ class CardService(
 
     fun getAll(pageable: Pageable): Page<CardResponse> = repository.findAll(pageable).map { it.toResponse() }
 
+    fun getAllSorted(pageable: Pageable): Page<CardResponse> =
+        repository.findAll(
+            PageRequest.of(
+                pageable.pageNumber,
+                pageable.pageSize,
+                Sort.by("selection").ascending()
+            )
+        ).map { it.toResponse() }
+
     fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> =
         repository.findByOwnedIsFalse(pageable)?.map { it.toResponse() } ?: Page.empty()
 
@@ -38,4 +49,19 @@ class CardService(
 
     fun getCountOwned(): Int = repository.countByOwnedIsTrue()
 
+    fun setFlagOwnedTrue(cardId: Long) {
+        val entity = repository.findById(cardId)
+        entity.ifPresent {
+            it.owned = !it.owned
+            repository.save(it)
+        }
+    }
+
+    fun setFlagRepeatedTrue(cardId: Long) {
+        val entity = repository.findById(cardId)
+        entity.ifPresent {
+            it.repeated = !it.repeated
+            repository.save(it)
+        }
+    }
 }

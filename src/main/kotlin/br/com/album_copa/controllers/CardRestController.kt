@@ -6,6 +6,7 @@ import br.com.album_copa.services.CardService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -32,7 +33,7 @@ class CardRestController(
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "size", defaultValue = "20") size: Int
-    ): Page<CardResponse> = service.getAll(PageRequest.of(page, size))
+    ): Page<CardResponse> = service.getAllSorted(PageRequest.of(page, size))
 
     @GetMapping("/not-owned")
     fun getNotOwned(
@@ -63,5 +64,10 @@ class CardRestController(
     @GetMapping("/count")
     fun count() = service.getCountOwned()
 
+    @PatchMapping("{cardId}/set-owned")
+    fun setOwnedTrue(@PathVariable cardId: Long) = service.setFlagOwnedTrue(cardId)
+
+    @PatchMapping("{cardId}/set-repeated")
+    fun setRepeatedTrue(@PathVariable cardId: Long) = service.setFlagRepeatedTrue(cardId)
 
 }

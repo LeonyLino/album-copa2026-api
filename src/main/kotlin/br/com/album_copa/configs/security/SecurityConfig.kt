@@ -38,6 +38,7 @@ class SecurityConfig(
                 it.requestMatchers("/auth/**", "/h2-console/**").permitAll()
                 // 🔓 apenas GET liberado
                 it.requestMatchers(HttpMethod.GET, "/cards/**").permitAll()
+                it.requestMatchers(HttpMethod.PATCH, "/cards/**").permitAll()
                 it.requestMatchers(HttpMethod.POST, "/exchange-proposal").permitAll()
                 it.requestMatchers(
                     "/",
