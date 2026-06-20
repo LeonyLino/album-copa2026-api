@@ -23,8 +23,12 @@ class CardService(
     fun saveAll(cards: List<CardRequest>) =
         repository.saveAll(cards.map { it.toEntity() })
 
+    fun getAll(code: String, pageable: Pageable): Page<CardResponse> =
+        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() } ?: Page.empty()
+        else this.getAllSorted(pageable)
 
-    fun getAllSorted(pageable: Pageable): Page<CardResponse> =
+
+    private fun getAllSorted(pageable: Pageable): Page<CardResponse> =
         repository.findAll(
             PageRequest.of(
                 pageable.pageNumber,

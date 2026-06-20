@@ -32,8 +32,9 @@ class CardRestController(
     @GetMapping
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "size", defaultValue = "20") size: Int
-    ): Page<CardResponse> = service.getAllSorted(PageRequest.of(page, size))
+        @RequestParam(value = "size", defaultValue = "20") size: Int,
+        @RequestParam(value = "code", required = false) code: String,
+    ): Page<CardResponse> = service.getAll(code, PageRequest.of(page, size))
 
     @GetMapping("/not-owned")
     fun getNotOwned(
