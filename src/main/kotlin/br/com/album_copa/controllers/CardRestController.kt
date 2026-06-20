@@ -32,34 +32,23 @@ class CardRestController(
     @GetMapping
     fun getAll(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "size", defaultValue = "20") size: Int
-    ): Page<CardResponse> = service.getAllSorted(PageRequest.of(page, size))
+        @RequestParam(value = "size", defaultValue = "20") size: Int,
+        @RequestParam(value = "code", required = false) code: String,
+    ): Page<CardResponse> = service.getAll(code, PageRequest.of(page, size))
 
     @GetMapping("/not-owned")
     fun getNotOwned(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "size", defaultValue = "20") size: Int
-    ): Page<CardResponse> = service.getAllIsOwnedFalse(PageRequest.of(page, size))
-
-    @GetMapping("{code}/not-owned")
-    fun getByCodeNotOwned(
-        @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "size", defaultValue = "20") size: Int,
-        @PathVariable code: String,
-    ): Page<CardResponse> = service.getAllByCodeAndOwnedIsFalse(code, PageRequest.of(page, size))
+        @RequestParam(value = "code", required = false) code: String,
+    ): Page<CardResponse> = service.getAllNotOwned(code, PageRequest.of(page, size))
 
     @GetMapping("/repeated")
-    fun getAllRepeated(
-        @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "size", defaultValue = "20") size: Int
-    ): Page<CardResponse> = service.getAllByRepeatedIsTrue(PageRequest.of(page, size))
-
-    @GetMapping("{code}/repeated")
     fun getByCodeRepeated(
         @RequestParam(value = "page", defaultValue = "0") page: Int,
         @RequestParam(value = "size", defaultValue = "20") size: Int,
-        @PathVariable code: String,
-    ): Page<CardResponse> = service.getAllByCodeAndRepeatedTrue(code, PageRequest.of(page, size))
+        @RequestParam(value = "code", required = false) code: String,
+    ): Page<CardResponse> = service.getAllRepeated(code, PageRequest.of(page, size))
 
     @GetMapping("/count")
     fun count() = service.getCountOwned()

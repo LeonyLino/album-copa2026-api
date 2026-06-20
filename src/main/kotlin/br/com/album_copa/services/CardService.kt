@@ -23,8 +23,12 @@ class CardService(
     fun saveAll(cards: List<CardRequest>) =
         repository.saveAll(cards.map { it.toEntity() })
 
+    fun getAll(code: String, pageable: Pageable): Page<CardResponse> =
+        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() } ?: Page.empty()
+        else this.getAllSorted(pageable)
 
-    fun getAllSorted(pageable: Pageable): Page<CardResponse> =
+
+    private fun getAllSorted(pageable: Pageable): Page<CardResponse> =
         repository.findAll(
             PageRequest.of(
                 pageable.pageNumber,
@@ -33,16 +37,24 @@ class CardService(
             )
         ).map { it.toResponse() }
 
-    fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> =
+    fun getAllRepeated(code: String, pageable: Pageable): Page<CardResponse> =
+        if (code.isNotBlank()) this.getAllByCodeAndRepeatedTrue(code, pageable)
+        else this.getAllByRepeatedIsTrue(pageable)
+
+    fun getAllNotOwned(code: String, pageable: Pageable): Page<CardResponse> =
+        if (code.isNotBlank()) this.getAllByCodeAndOwnedIsFalse(code, pageable)
+        else this.getAllIsOwnedFalse(pageable)
+
+    private fun getAllIsOwnedFalse(pageable: Pageable): Page<CardResponse> =
         repository.findByOwnedIsFalse(pageable)?.map { it.toResponse() } ?: Page.empty()
 
-    fun getAllByRepeatedIsTrue(pageable: Pageable): Page<CardResponse> =
+    private fun getAllByRepeatedIsTrue(pageable: Pageable): Page<CardResponse> =
         repository.findByRepeatedIsTrue(pageable)?.map { it.toResponse() } ?: Page.empty()
 
-    fun getAllByCodeAndRepeatedTrue(code: String, page: Pageable): Page<CardResponse> =
+    private fun getAllByCodeAndRepeatedTrue(code: String, page: Pageable): Page<CardResponse> =
         repository.findByCodeContainingAndRepeatedIsTrue(code, page)?.map { it.toResponse() } ?: Page.empty()
 
-    fun getAllByCodeAndOwnedIsFalse(code: String, page: Pageable): Page<CardResponse> =
+    private fun getAllByCodeAndOwnedIsFalse(code: String, page: Pageable): Page<CardResponse> =
         repository.findByCodeContainingAndOwnedIsFalse(code, page)?.map { it.toResponse() } ?: Page.empty()
 
     fun getCountOwned(): Int = repository.countByOwnedIsTrue()

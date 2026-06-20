@@ -12,5 +12,6 @@ interface CardRepository : JpaRepository<CardEntity, Long> {
     fun findByRepeatedIsTrue(pageable: Pageable): Page<CardEntity>?
     fun findByCodeContainingAndRepeatedIsTrue(code: String, pageable: Pageable): Page<CardEntity>?
     fun countByOwnedIsTrue(): Int
+    fun findAllByCodeContaining(code: String, pageable: Pageable): Page<CardEntity>?
 
 }
