@@ -9,9 +9,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 
 @Service
 class CardService(
@@ -26,8 +24,7 @@ class CardService(
         repository.saveAll(cards.map { it.toEntity() })
 
     fun getAll(code: String, pageable: Pageable): Page<CardResponse> =
-        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() }
-            ?: Page.empty()
+        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() } ?: Page.empty()
         else this.getAllSorted(pageable)
 
 
