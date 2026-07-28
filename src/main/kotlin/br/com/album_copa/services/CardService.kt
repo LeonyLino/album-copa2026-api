@@ -67,11 +67,24 @@ class CardService(
         }
     }
 
-    fun setFlagRepeatedTrue(cardId: Long) {
+    fun setFlagRepeatedFalse(cardId: Long) {
         val entity = repository.findById(cardId)
         entity.ifPresent {
-            it.repeated = !it.repeated
-            repository.save(it)
+            if (it.qtd != null && it.qtd!! <= 1) {
+                it.repeated = false
+                it.qtd = 0
+                repository.save(it)
+            }
         }
     }
+
+    fun setRepeatedQtd(id: Long, qtd: Int) {
+        val entity = repository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+
+        entity.qtd = qtd
+        entity.repeated = true
+        repository.save(entity)
+    }
+
+
 }
