@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class CardService(
@@ -24,7 +26,8 @@ class CardService(
         repository.saveAll(cards.map { it.toEntity() })
 
     fun getAll(code: String, pageable: Pageable): Page<CardResponse> =
-        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() } ?: Page.empty()
+        if (code.isNotBlank()) repository.findAllByCodeContaining(code, pageable)?.map { it.toResponse() }
+            ?: Page.empty()
         else this.getAllSorted(pageable)
 
 
@@ -67,11 +70,24 @@ class CardService(
         }
     }
 
-    fun setFlagRepeatedTrue(cardId: Long) {
+    fun setFlagRepeatedFalse(cardId: Long) {
         val entity = repository.findById(cardId)
         entity.ifPresent {
-            it.repeated = !it.repeated
-            repository.save(it)
+            if (it.qtd != null && it.qtd!! <= 1) {
+                it.repeated = false
+                it.qtd = 0
+                repository.save(it)
+            }
         }
     }
+
+    fun setRepeatedQtd(id: Long, qtd: Int) {
+        val entity = repository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+
+        entity.qtd = qtd
+        entity.repeated = true
+        repository.save(entity)
+    }
+
+
 }

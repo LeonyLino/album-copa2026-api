@@ -23,3 +23,7 @@ data class CardResponse(
     val repeated: Boolean,
 )
 
+data class SetRepeatedCountRequest(
+    val qtdRepeated: Int
+)
+

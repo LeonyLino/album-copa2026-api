@@ -2,6 +2,7 @@ package br.com.album_copa.controllers
 
 import br.com.album_copa.models.dtos.CardRequest
 import br.com.album_copa.models.dtos.CardResponse
+import br.com.album_copa.models.dtos.SetRepeatedCountRequest
 import br.com.album_copa.services.CardService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -56,7 +57,13 @@ class CardRestController(
     @PatchMapping("{cardId}/set-owned")
     fun setOwnedTrue(@PathVariable cardId: Long) = service.setFlagOwnedTrue(cardId)
 
-    @PatchMapping("{cardId}/set-repeated")
-    fun setRepeatedTrue(@PathVariable cardId: Long) = service.setFlagRepeatedTrue(cardId)
+    @PatchMapping("{cardId}/set-repeated-false")
+    fun setRepeatedFalse(@PathVariable cardId: Long) = service.setFlagRepeatedFalse(cardId)
+
+    @PatchMapping("{id}/set-repeated-qtd")
+    fun setRepeatedQtd(
+        @PathVariable id: Long,
+        @RequestBody qtd: SetRepeatedCountRequest
+    ) = service.setRepeatedQtd(id, qtd.qtdRepeated)
 
 }
